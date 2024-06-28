@@ -1,0 +1,123 @@
+package Lab1Package;
+
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JTextField;
+import java.awt.BorderLayout;
+import javax.swing.JLabel;
+import javax.swing.JButton;
+import java.awt.Color;
+import javax.swing.JTable;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
+public class Lab1Class {
+
+	private JFrame frame;
+	private JTextField textFieldLow;
+	private JTextField textFieldUp;
+	private JTextField textFieldStep;
+	private JTable table;
+	private JLabel LabelOutResult;
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Lab1Class window = new Lab1Class();
+					window.frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the application.
+	 */
+	public Lab1Class() {
+		initialize();
+	}
+	
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		frame = new JFrame();
+		frame.setBounds(100, 100, 900, 300);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(null);
+		
+		JButton btnNewButton = new JButton("Посчитать");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				float a=0.5f;
+				float b=0.2f;
+				float c=0.1f;
+				float result=Calculate_Integral(a,b,c);
+				LabelOutResult.setText(Float.toString(result));
+			}
+		});
+		btnNewButton.setBounds(10, 129, 96, 23);
+		frame.getContentPane().add(btnNewButton);
+		
+		textFieldLow = new JTextField();
+		textFieldLow.setBounds(10, 11, 96, 20);
+		frame.getContentPane().add(textFieldLow);
+		textFieldLow.setColumns(10);
+		
+		textFieldUp = new JTextField();
+		textFieldUp.setBounds(10, 42, 96, 20);
+		frame.getContentPane().add(textFieldUp);
+		textFieldUp.setColumns(10);
+		
+		textFieldStep = new JTextField();
+		textFieldStep.setBounds(10, 73, 96, 20);
+		frame.getContentPane().add(textFieldStep);
+		textFieldStep.setColumns(10);
+		
+		JLabel lblNewLabel = new JLabel("Low");
+		lblNewLabel.setBounds(116, 14, 49, 14);
+		frame.getContentPane().add(lblNewLabel);
+		
+		JLabel lblNewLabel_1 = new JLabel("Up");
+		lblNewLabel_1.setBounds(116, 45, 49, 14);
+		frame.getContentPane().add(lblNewLabel_1);
+		
+		JLabel lblNewLabel_2 = new JLabel("Step");
+		lblNewLabel_2.setBounds(116, 76, 49, 14);
+		frame.getContentPane().add(lblNewLabel_2);
+		
+		JLabel lblNewLabel_3 = new JLabel("Result");
+		lblNewLabel_3.setBounds(116, 101, 49, 14);
+		frame.getContentPane().add(lblNewLabel_3);
+		
+		LabelOutResult = new JLabel("");
+		LabelOutResult.setBackground(new Color(255, 255, 255));
+		LabelOutResult.setBounds(10, 104, 49, 14);
+		frame.getContentPane().add(LabelOutResult);
+		
+		JButton btnNewButton_1 = new JButton("Добавить");
+		btnNewButton_1.setBounds(10, 163, 96, 23);
+		frame.getContentPane().add(btnNewButton_1);
+		
+		JButton btnNewButton_2 = new JButton("Удалить");
+		btnNewButton_2.setBounds(10, 197, 96, 23);
+		frame.getContentPane().add(btnNewButton_2);
+		
+		table = new JTable();
+		table.setBounds(255, 45, 537, 134);
+		frame.getContentPane().add(table);
+	}
+	
+	public float Calculate_Integral(float up, float low, float step) {
+		float ret=up+low+step;
+		return ret;
+	}
+	}
+}

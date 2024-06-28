@@ -1,0 +1,182 @@
+package Lab1Package;
+
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JTextField;
+import java.awt.BorderLayout;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JButton;
+import java.awt.Color;
+import javax.swing.JTable;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.ListSelectionModel;
+import javax.swing.JScrollPane;
+
+public class Lab1Class {
+
+	private JFrame frmIntegral;
+	private JTextField textFieldLow;
+	private JTextField textFieldUp;
+	private JTextField textFieldStep;
+	private JTable table;
+	private JLabel LabelOutResult;
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Lab1Class window = new Lab1Class();
+					window.frmIntegral.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the application.
+	 */
+	public Lab1Class() {
+		initialize();
+	}
+	
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		frmIntegral = new JFrame();
+		frmIntegral.setResizable(false);
+		frmIntegral.setTitle("Integral");
+		frmIntegral.setBounds(100, 100, 750, 300);
+		frmIntegral.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmIntegral.getContentPane().setLayout(null);
+		
+		JButton BtnCompute = new JButton("Compute");
+		BtnCompute.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				float Up,Low,Step;
+				try {
+					Up=Float.parseFloat(textFieldUp.getText());
+					Low=Float.parseFloat(textFieldLow.getText());
+					Step=Float.parseFloat(textFieldStep.getText());
+					float result=Calculate_Integral(Up,Low,Step);
+					LabelOutResult.setText(Float.toString(result));
+				}catch(Exception exc) {
+					JOptionPane.showMessageDialog(null,"Enter valid number");
+				}
+
+			}
+		});
+		BtnCompute.setBounds(10, 129, 123, 23);
+		frmIntegral.getContentPane().add(BtnCompute);
+		
+		textFieldLow = new JTextField();
+		textFieldLow.setBounds(10, 11, 123, 20);
+		frmIntegral.getContentPane().add(textFieldLow);
+		textFieldLow.setColumns(10);
+		
+		textFieldUp = new JTextField();
+		textFieldUp.setBounds(10, 42, 123, 20);
+		frmIntegral.getContentPane().add(textFieldUp);
+		textFieldUp.setColumns(10);
+		
+		textFieldStep = new JTextField();
+		textFieldStep.setBounds(10, 73, 123, 20);
+		frmIntegral.getContentPane().add(textFieldStep);
+		textFieldStep.setColumns(10);
+		
+		JLabel lblNewLabel = new JLabel("Low");
+		lblNewLabel.setBounds(143, 17, 49, 14);
+		frmIntegral.getContentPane().add(lblNewLabel);
+		
+		JLabel lblNewLabel_1 = new JLabel("Up");
+		lblNewLabel_1.setBounds(143, 48, 49, 14);
+		frmIntegral.getContentPane().add(lblNewLabel_1);
+		
+		JLabel lblNewLabel_2 = new JLabel("Step");
+		lblNewLabel_2.setBounds(143, 79, 49, 14);
+		frmIntegral.getContentPane().add(lblNewLabel_2);
+		
+		JLabel lblNewLabel_3 = new JLabel("Result");
+		lblNewLabel_3.setBounds(143, 104, 49, 14);
+		frmIntegral.getContentPane().add(lblNewLabel_3);
+		
+		LabelOutResult = new JLabel("");
+		LabelOutResult.setBackground(new Color(255, 255, 255));
+		LabelOutResult.setBounds(10, 104, 123, 14);
+		frmIntegral.getContentPane().add(LabelOutResult);
+		
+		JButton BtnAdd = new JButton("Add");
+		BtnAdd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				DefaultTableModel tableModel = (DefaultTableModel)table.getModel();
+				try {
+					String data[]= {textFieldUp.getText(),textFieldLow.getText(),textFieldStep.getText(),LabelOutResult.getText()};
+					tableModel.addRow(data);
+				}catch(Exception exc) {
+					JOptionPane.showMessageDialog(null,"Enter valid number");
+				}
+			}
+		});
+		BtnAdd.setBounds(10, 163, 123, 23);
+		frmIntegral.getContentPane().add(BtnAdd);
+		
+		JButton BtnDel = new JButton("Del");
+		BtnDel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+		        int selectedRow = table.getSelectedRow();
+		        DefaultTableModel model = (DefaultTableModel)table.getModel();
+		        if(selectedRow >= 0){
+		            model.removeRow(selectedRow);
+		        }else {
+		        	JOptionPane.showMessageDialog(null,"Select row");
+		        }
+
+			}
+		});
+		BtnDel.setBounds(10, 197, 123, 23);
+		frmIntegral.getContentPane().add(BtnDel);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(215, 14, 508, 206);
+		frmIntegral.getContentPane().add(scrollPane);
+		
+		table = new JTable();
+		scrollPane.setViewportView(table);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"Low", "Up", "Step", "Result"
+			}
+		) {
+			Class[] columnTypes = new Class[] {
+				String.class, String.class, String.class, String.class
+			};
+			public Class getColumnClass(int columnIndex) {
+				return columnTypes[columnIndex];
+			}
+		});
+	}
+	
+	public float Calculate_Integral(float up, float low, float step) {
+		float Integral=0;
+		float NextStep=low+step;
+		float CurrentStep=low;
+		while(NextStep<up) {
+			Integral=Integral+((1/NextStep+1/CurrentStep)/2)*step;
+			CurrentStep=NextStep;
+			NextStep=NextStep+step;
+		}
+		
+		return Integral;
+	}
+}
